@@ -7,4 +7,3 @@
 5. User can add multiple income items and multiple expense items to the statement.
 6. There is a submit button which sends the statement details and the income and expense items to the server.
 7. The rails server validates the statement details and the income and expense items and returns success or error message depending on the success of the operation
- 

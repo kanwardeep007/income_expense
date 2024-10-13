@@ -1,0 +1,60 @@
+
+<%= form_with(model: @statement, local: false) do |form| %>
+    <div>
+      <%= datetime_field_tag :created_at, Date.today %>
+    </div>
+  
+    <div>
+      <%= form.label :name %>
+      <%= form.text_field :name %>
+    </div>
+  
+    <h3>Income Items</h3>
+    <div id="income-items">
+      <%= form.fields_for :income_items do |income_form| %>
+        <div>
+          <%= income_form.label :description %>
+          <%= income_form.text_field :description %>
+          <%= income_form.label :amount %>
+          <%= income_form.number_field :amount, step: 0.01 %>
+        </div>
+      <% end %>
+      <button type="button" id="add-income">Add Income Item</button>
+      <script>
+        document.getElementById('add-income').addEventListener('click', function() {
+          const newIncomeItem = document.createElement('div');
+          newIncomeItem.innerHTML = `
+            <div>
+              <label for="statement_income_items_attributes_${Date.now()}_description">Description</label>
+              <input type="text" name="statement[income_items_attributes][${Date.now()}][description]" id="statement_income_items_attributes_${Date.now()}_description">
+              <label for="statement_income_items_attributes_${Date.now()}_amount">Amount</label>
+              <input step="0.01" type="number" name="statement[income_items_attributes][${Date.now()}][amount]" id="statement_income_items_attributes_${Date.now()}_amount">
+            </div>
+          `;
+          document.getElementById('income-items').insertBefore(newIncomeItem, this);
+        });
+      </script>
+    </div>
+  
+    <h3>Expense Items</h3>
+    <div id="expense-items">
+      <%= form.fields_for :expense_items do |expense_form| %>
+        <div>
+          <%= expense_form.label :description %>
+          <%= expense_form.text_field :description %>
+          <%= expense_form.label :amount %>
+          <%= expense_form.number_field :amount, step: 0.01 %>
+        </div>
+      <% end %>
+      <button type="button" id="add-expense">Add Expense Item</button>
+    </div>
+  
+    <%= form.submit 'Submit Statement' %>
+  <% end %>
+  
+  <div id="result"></div>
+  
+  <script>
+    // Add JavaScript to handle dynamic form fields and form submission
+    // (This part would typically be in a separate JS file)
+  </script>
