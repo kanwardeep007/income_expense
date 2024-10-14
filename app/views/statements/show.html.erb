@@ -13,8 +13,8 @@
   </div>
 <% end %>
 
-
-
+<h2>Income Expense Rating: <%= @statement.income_expense_rating %></h2>
+<h2>Disposable Income: <%= @statement.disposable_income %></h2>
 <h2>Add a transaction:</h2>
 <%= form_with model: [ @statement, @statement.transactions.build ] do |form| %>
   <p>
