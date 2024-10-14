@@ -1,0 +1,18 @@
+<h1>User</h1>
+<h1><%= @user.name %></h1>
+
+
+<ul>
+<li><%= link_to "Edit", edit_user_path(@user) %></li>
+
+
+<h2>Statements</h2>
+<% @user.statements.each do |statement| %>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <span><strong>Title:</strong> <%= statement.title %></span>
+    <span><strong>Created At:</strong> <%= statement.created_at %></span>
+    <span><strong>Updated At:</strong> <%= statement.updated_at %></span>
+  </div>
+<% end %>
+
+<%= link_to "New Statement", new_statement_path %>

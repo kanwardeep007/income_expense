@@ -4,7 +4,7 @@ class Transactions < ActiveRecord::Migration[8.0]
      id serial primary key,
      statement_id integer references Statements(id),
      amount integer,
-     transaction_type string,
+     transaction_type text,
      settled_timestamp timestamp with time zone,
      updated_at timestamp with time zone,
      created_at timestamp with time zone,

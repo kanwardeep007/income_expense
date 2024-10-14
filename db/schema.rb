@@ -10,13 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_13_232347) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_14_012519) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
-
-  # Custom types defined in this database.
-  # Note that some types may not work with other database engines. Be careful if changing database.
-  create_enum "transaction_type_enum", ["credit", "debit"]
 
   create_table "articles", force: :cascade do |t|
     t.string "title"
@@ -43,12 +39,13 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_232347) do
     t.text "title"
     t.timestamptz "created_at"
     t.timestamptz "updated_at"
+    t.integer "user_id"
   end
 
   create_table "transactions", id: :serial, force: :cascade do |t|
     t.integer "statement_id"
     t.integer "amount"
-    t.enum "transaction_type", enum_type: "transaction_type_enum"
+    t.text "transaction_type"
     t.timestamptz "settled_timestamp"
     t.timestamptz "updated_at"
     t.timestamptz "created_at"
@@ -71,10 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_232347) do
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
-    t.text "first_name"
-    t.text "last_name"
-    t.text "middle_name"
-    t.date "date_of_birth"
+    t.text "name"
     t.text "email"
     t.timestamptz "created_at"
     t.timestamptz "updated_at"
@@ -83,10 +77,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_232347) do
   end
 
   add_foreign_key "comments", "articles"
-  add_foreign_key "statement_transactions", "statements", name: "statement_transactions_statement_id_fkey"
-  add_foreign_key "statement_transactions", "users", name: "statement_transactions_user_id_fkey"
+  add_foreign_key "statements", "users", name: "statements_user_id_fkey"
   add_foreign_key "transactions", "statements", name: "transactions_statement_id_fkey"
-  add_foreign_key "user_income_statistics", "users", name: "user_income_statistics_user_id_fkey"
   add_foreign_key "user_statements", "statements", name: "user_statements_statement_id_fkey"
   add_foreign_key "user_statements", "users", name: "user_statements_user_id_fkey"
 end
