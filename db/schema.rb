@@ -10,13 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_13_011800) do
+ActiveRecord::Schema[8.0].define(version: 2024_10_13_232347) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   # Custom types defined in this database.
   # Note that some types may not work with other database engines. Be careful if changing database.
   create_enum "transaction_type_enum", ["credit", "debit"]
+
+  create_table "articles", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commenter"
+    t.text "body"
+    t.bigint "article_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["article_id"], name: "index_comments_on_article_id"
+  end
 
   create_table "statement_transactions", primary_key: ["user_id", "statement_id"], force: :cascade do |t|
     t.integer "user_id", null: false
@@ -66,6 +82,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_13_011800) do
     t.unique_constraint ["email"], name: "users_email_key"
   end
 
+  add_foreign_key "comments", "articles"
   add_foreign_key "statement_transactions", "statements", name: "statement_transactions_statement_id_fkey"
   add_foreign_key "statement_transactions", "users", name: "statement_transactions_user_id_fkey"
   add_foreign_key "transactions", "statements", name: "transactions_statement_id_fkey"

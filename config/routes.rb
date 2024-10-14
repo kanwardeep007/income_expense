@@ -11,7 +11,12 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root "pages#index"
-  resources :statements, only: [:index, :new, :create]
-  post 'statements', to: 'statements#create'
+  root "statements#index"
+
+  resources :statements do
+    resources :transactions
+  end
+
+  # resources :statements, only: [:index, :create, :new]
+
 end

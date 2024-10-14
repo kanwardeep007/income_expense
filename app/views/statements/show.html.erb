@@ -1,0 +1,56 @@
+<h1><%= @statement.title %></h1>
+
+<ul>
+<li><%= link_to "Edit", edit_statement_path(@statement) %></li>
+<li><%= link_to "Statements", statements_path %></li>
+
+<h2>Transactions</h2>
+<% @statement.transactions.each do |transaction| %>
+  <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+    <span><strong>Amount:</strong> <%= transaction.amount %></span>
+    <span><strong>Transaction Type:</strong> <%= transaction.transaction_type %></span>
+    <span><strong>Transaction Date:</strong> <%= transaction.settled_timestamp %></span>
+  </div>
+<% end %>
+
+
+
+<h2>Add a transaction:</h2>
+<%= form_with model: [ @statement, @statement.transactions.build ] do |form| %>
+  <p>
+    <%= form.label :amount %><br>
+    <%= form.text_field :amount %>
+    <% if @transaction_amount_errors.present? %>
+            <div class="errors">
+           <% @transaction_amount_errors.each do |error| %>
+              <p class="error-message" style="color: darkred;"><%= error %></p>
+            <% end %>
+            </div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :transaction_type %><br>
+    <%= form.select :transaction_type, ['credit', 'debit'], prompt: 'Select transaction type' %>
+    <% if @transaction_transaction_type_errors.present? %>
+            <div class="errors">
+           <% @transaction_transaction_type_errors.each do |error| %>
+              <p class="error-message" style="color: darkred;"><%= error %></p>
+            <% end %>
+            </div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.label :settled_timestamp, "Transaction Date" %><br>
+    <%= form.datetime_local_field :settled_timestamp, value: Time.current.strftime("%Y-%m-%dT%H:%M") %>
+    <% if @transaction_settled_timestamp_errors.present? %>
+            <div class="errors">
+           <% @transaction_settled_timestamp_errors.each do |error| %>
+              <p class="error-message" style="color: darkred;"><%= error %></p>
+            <% end %>
+            </div>
+    <% end %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>

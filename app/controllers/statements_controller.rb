@@ -4,28 +4,53 @@ class StatementsController < ApplicationController
     @statements = Statement.all
   end
 
+  def show
+    @statement = Statement.find(params[:id])
+  end
+
   def new
     @statement = Statement.new
-    @statement.income_items.build
-    @statement.expense_items.build
   end
 
   def create
+    puts params.inspect
+    puts "----------------"
+    puts statement_params.inspect
     @statement = Statement.new(statement_params)
     if @statement.save
-      render json: { success: true, message: 'Statement created successfully' }
+      redirect_to @statement, notice: 'Statement created successfully'
     else
-      render json: { success: false, errors: @statement.errors.full_messages }, status: :unprocessable_entity
+      puts @statement.errors.full_messages
+      # render json: { success: false, errors: @statement.errors.full_messages }, 
+      render :new, status: :unprocessable_entity
     end
+  end
+
+
+  def edit
+    @statement = Statement.find(params[:id])
+  end
+  def update
+    @statement = Statement.find(params[:id])
+
+    if @statement.update(statement_params)
+      redirect_to @statement
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
+  def destroy
+    @statement = Statement.find(params[:id])
+    @statement.destroy
+
+    redirect_to statements_path, status: :see_other
   end
 
   private
 
   def statement_params
-    params.require(:statement).permit(
-      :month, :year, :name,
-      income_items_attributes: [:description, :amount],
-      expense_items_attributes: [:description, :amount]
-    )
+    params.require(:statement).permit(:title)
   end
+  
 end
