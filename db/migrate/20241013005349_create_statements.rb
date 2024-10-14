@@ -8,6 +8,6 @@ class CreateStatements < ActiveRecord::Migration[8.0]
     );"
   end
   def down
-    execute "DROP TABLE Statements;"
+    execute "DROP TABLE Statements CASCADE;"
   end
 end

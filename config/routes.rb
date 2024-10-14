@@ -11,12 +11,18 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
-  root "statements#index"
+  root "users#index"
 
-  resources :statements do
-    resources :transactions
-  end
+  # resources :statements do
+  #   resources :transactions
+  # end
 
   # resources :statements, only: [:index, :create, :new]
+
+  resources :users do
+    resources :statements do
+      resources :transactions
+    end
+  end
 
 end
